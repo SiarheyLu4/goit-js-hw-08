@@ -8,11 +8,21 @@ const refs = {
     textarea: document.querySelector('.feedback-form textarea'),
 };
 
+const formData = {};
 populateTextarea();
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.input.addEventListener('input', throttle(onEmailInput, 500));
-refs.textarea.addEventListener('input', throttle(onTextareaInput, 500));
+// refs.input.addEventListener('input', throttle(onEmailInput, 500));
+// refs.textarea.addEventListener('input', throttle(onTextareaInput, 500));
+
+refs.form.addEventListener('input', throttle(onFormInput, 500));
+
+function onFormInput(e) { 
+    formData[e.target.name] = e.target.value;
+    const stringData = JSON.stringify(formData);
+    localStorage.setItem(STORAGE_KEY, stringData);
+    console.log(formData);
+};
 
 function onFormSubmit(e) {
     e.preventDefault();
@@ -22,29 +32,27 @@ function onFormSubmit(e) {
     localStorage.removeItem(STORAGE_KEY);
  }
 
+// function onEmailInput(e) {
+//     const email = e.target.value;
+//     localStorage.setItem(STORAGE_KEY, email)
 
-function onEmailInput(e) {
-    const email = e.target.value;
-    localStorage.setItem(STORAGE_KEY, email)
+//     console.log('email:', email);
+//  }
 
-    console.log('email:', email);
- }
+// function onTextareaInput(e) { 
+//     const message = e.target.value;
+//     localStorage.setItem(STORAGE_KEY, message)
 
-
-function onTextareaInput(e) { 
-    const message = e.target.value;
-    localStorage.setItem(STORAGE_KEY, message)
-
-    console.log('message:', message);
-}
-
+//     console.log('message:', message);
+// }
 
 function populateTextarea() {
-    const saveMessage = localStorage.getItem(STORAGE_KEY);
+    const saveMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
     if (saveMessage) {
         console.log(saveMessage);
         refs.textarea.value = saveMessage;
+        refs.input.value = saveMessage;
     }
 }
 
