@@ -21,7 +21,7 @@ function onFormInput(e) {
     formData[e.target.name] = e.target.value;
     const stringData = JSON.stringify(formData);
     localStorage.setItem(STORAGE_KEY, stringData);
-    console.log(formData);
+    // console.log(formData);
 };
 
 function onFormSubmit(e) {
