@@ -14,11 +14,14 @@ populateTextarea();
 refs.form.addEventListener('submit', onFormSubmit);
 // refs.input.addEventListener('input', throttle(onEmailInput, 500));
 // refs.textarea.addEventListener('input', throttle(onTextareaInput, 500));
-
 refs.form.addEventListener('input', throttle(onFormInput, 500));
 
 function onFormInput(e) { 
-    formData[e.target.name] = e.target.value;
+    const formData = {
+    
+    message: refs.textarea.value,
+    email: refs.input.value,
+    }
     const stringData = JSON.stringify(formData);
     localStorage.setItem(STORAGE_KEY, stringData);
     // console.log(formData);
@@ -29,7 +32,7 @@ function onFormSubmit(e) {
     console.log(JSON.parse(localStorage.getItem(STORAGE_KEY)))
     e.currentTarget.reset();
     localStorage.removeItem(STORAGE_KEY);
- }
+}
 
 // function onEmailInput(e) {
 //     const email = e.target.value;
@@ -46,12 +49,11 @@ function onFormSubmit(e) {
 // }
 
 function populateTextarea() {
-    const saveMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const saveMessage = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
     if (saveMessage) {
         console.log(saveMessage);
-        refs.textarea.value = saveMessage['message'] || '';
-        refs.input.value = saveMessage['email'] || '';
+        refs.textarea.value = saveMessage.message || '';
+        refs.input.value = saveMessage.email || '';
     }
 }
-
